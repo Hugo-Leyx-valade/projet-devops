@@ -1,7 +1,57 @@
-# TP DevOps - Ansible
+# TP DevOps - Ansible — Déploiement d'une API FastAPI
 
-Projet d'exemple pour la prise en main d'Ansible dans un contexte DevOps.
-Il illustre le déploiement automatisé d'une stack applicative (base de données, serveur API, reverse proxy Nginx) à l'aide de playbooks Ansible et de l'outil de test Molecule.
+Projet du TP DevOps S8 : déploiement complet automatisé d'une application web minimaliste
+(**FastAPI** en Python) sur une infrastructure Ubuntu 24.04, pilotée par Ansible et testée
+avec Molecule + Vagrant/VirtualBox.
+
+## Application déployée : FastAPI
+
+API HTTP minimaliste exposant une ressource `items` (voir [`app/main.py`](app/main.py)).
+
+| Méthode | Route | Description |
+|---|---|---|
+| GET | `/` | Métadonnées de l'appli (name, env) |
+| GET | `/health` | Healthcheck (utilisé par nginx) |
+| GET | `/items` | Liste des items |
+| GET | `/items/{id}` | Détail d'un item |
+| POST | `/items` | Création d'un item |
+| DELETE | `/items/{id}` | Suppression |
+| GET | `/docs` | Swagger UI auto-généré |
+
+### Stack
+
+- **FastAPI + Uvicorn** (Python 3.12)
+- **Nginx** en reverse proxy (port 80 → 8000 interne)
+- **MySQL** comme base de données (prêt à être branché à l'appli)
+
+### Lancer manuellement (hors Ansible)
+
+```bash
+python3 -m venv .venv-local
+source .venv-local/bin/activate
+pip install -r app/requirements.txt
+cd app && uvicorn main:app --reload
+# → http://127.0.0.1:8000/docs
+```
+
+## Auteur
+
+- Hugo Leyx-Valade *(travail individuel)*
+
+## Bonus implémentés
+
+- [x] **Ansible Vault** : fichier de passphrase `.devops_vault_pass.txt` référencé dans
+      `ansible.cfg`. Les secrets sensibles (`mysql_root_password`, `database_app_password`)
+      peuvent être chiffrés via `ansible-vault encrypt_string`.
+- [ ] Multi-environnements (staging / production)
+- [ ] Certbot (TLS Let's Encrypt)
+- [ ] Maildev (serveur SMTP de développement)
+- [ ] Postfix
+- [ ] Backup automatisé
+
+---
+
+## Documentation technique
 
 ## Prérequis
 

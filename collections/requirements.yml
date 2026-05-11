@@ -1,0 +1,9 @@
+---
+
+collections:
+  # Modules MySQL utilisés par roles/database
+  - name: community.mysql
+    version: ">=3.10.0"
+  # ansible.posix pour certains modules utilitaires (sync, firewall, etc.)
+  - name: ansible.posix
+    version: ">=1.5.0"

@@ -1,8 +1,8 @@
 ---
 
-# Configuration global au projet
+# Configuration globale au projet
 
-# NGINX - configuration  du rôle https://github.com/geerlingguy/ansible-role-nginx
+# NGINX - configuration du rôle https://github.com/geerlingguy/ansible-role-nginx
 nginx_remove_default_vhost: true
 nginx_worker_processes: "{{ ansible_processor_vcpus | default(ansible_processor_count) }}"
 nginx_worker_connections: "2048"
@@ -22,12 +22,9 @@ nginx_extra_http_options: |
   types_hash_max_size 2048;
   proxy_pass_header X-Accel-Expires;
   expires -1;
-  server {
-    listen  80 default_server;
-    return 444;
-  }
 
-nginx_vhosts_base:
+# Vhost de status nginx uniquement (le vhost applicatif est déployé par le rôle webserver)
+nginx_vhosts:
   - listen: "8080"
     server_name: "localhost"
     extra_parameters: |
@@ -37,5 +34,3 @@ nginx_vhosts_base:
           allow 127.0.0.1;
           deny all;
       }
-
-nginx_vhosts: "{{ nginx_vhosts_base }}"

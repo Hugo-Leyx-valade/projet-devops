@@ -1,3 +1,22 @@
 ---
 
 # Configuration dédiée au groupe de la BDD
+
+# --- MySQL (rôle geerlingguy.mysql) ---------------------------------------
+mysql_root_password: "rootpass"           # à chiffrer via Ansible Vault en prod
+mysql_databases:
+  - name: fastapi_db
+    encoding: utf8mb4
+    collation: utf8mb4_unicode_ci
+
+mysql_users:
+  - name: fastapi_user
+    host: "localhost"
+    password: "changeme"                   # à chiffrer via Ansible Vault en prod
+    priv: "fastapi_db.*:ALL"
+
+# --- Base et utilisateur applicatif (rôle local database) -----------------
+database_app_name: "fastapi_db"
+database_app_user: "fastapi_user"
+database_app_password: "changeme"
+database_app_host: "localhost"

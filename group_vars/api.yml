@@ -1,3 +1,16 @@
 ---
 
 # Configuration dédiée au groupe de l'API
+
+# --- FastAPI runtime ------------------------------------------------------
+app_bind_host: "127.0.0.1"
+app_bind_port: 8000
+app_workers: 2
+
+app_env:
+  APP_NAME: "efrei-devops-api"
+  APP_ENV: "production"
+
+# --- Upstream pour le reverse proxy nginx ---------------------------------
+webserver_upstream_host: "{{ app_bind_host }}"
+webserver_upstream_port: "{{ app_bind_port }}"

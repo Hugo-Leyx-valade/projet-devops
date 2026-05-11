@@ -18,9 +18,13 @@ lint: |
   flake8
 platforms:
   - name: devops-dev-1
-    box: onlyoffice/base-ubuntu2404
+    box: bento/ubuntu-24.04
     memory: 2048
     cpus: 1
+
+    instance_raw_config_args:
+      - 'vm.network "forwarded_port", guest: 80, host: 8080'
+      - 'vm.network "forwarded_port", guest: 8000, host: 8000'
 #    provider_options:
 #      gui: true # Peut être nécessaire pour Windows (WSL)
     provider_override_args:
@@ -33,7 +37,7 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_CONFIG: ../../ansible.cfg
-    ANSIBLE_LIBRARY: "${VIRTUAL_ENV}/lib/python3.12/site-packages/molecule_vagrant/modules"
+    ANSIBLE_LIBRARY: "${MOLECULE_VAGRANT_MODULES}"
   inventory:
     links:
       hosts: ../../hosts/hosts_dev

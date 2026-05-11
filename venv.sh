@@ -19,6 +19,11 @@ setup_env () {
   # Force zsh/bash to rehash the command cache after activation
   hash -r 2>/dev/null || rehash 2>/dev/null || true
   echo "Python: $(python --version) | $(which python)"
+  # Expose le dossier modules de molecule-vagrant pour ANSIBLE_LIBRARY (utilisé par molecule.yml)
+  export MOLECULE_VAGRANT_MODULES="$(python -c 'import os, molecule_vagrant; print(os.path.join(os.path.dirname(molecule_vagrant.__file__), "modules"))' 2>/dev/null)"
+  if [[ -n "${MOLECULE_VAGRANT_MODULES}" ]]; then
+    echo "MOLECULE_VAGRANT_MODULES=${MOLECULE_VAGRANT_MODULES}"
+  fi
 }
 
 update_requirements () {

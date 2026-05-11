@@ -3,3 +3,7 @@
 # Rôle pour l'installation et la configuration de Nginx
 - src: geerlingguy.nginx
   version: 3.2.0
+
+# Rôle pour l'installation et la configuration de MySQL
+- src: geerlingguy.mysql
+  version: 4.3.4

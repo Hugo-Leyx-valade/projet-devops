@@ -1,15 +1,21 @@
 ---
 
-- name: Installation de la base de données mysql
+- name: Installation de la base de données MySQL
   hosts: database
   become: true
+  roles:
+    - { role: database, tags: ["database"] }
 
-- name: Install applicative server
+- name: Installation du serveur applicatif (runtime + FastAPI)
   hosts: api
   become: true
+  roles:
+    - { role: runtime, tags: ["runtime"] }
+    - { role: app, tags: ["app"] }
 
-- name: Installation de nginx
+- name: Installation de nginx (reverse proxy)
   hosts: nginx
   become: true
   roles:
-    - { role: geerlingguy.nginx, tags: [ "nginx" ] }
+    - { role: geerlingguy.nginx, tags: ["nginx"] }
+    - { role: webserver, tags: ["webserver"] }
