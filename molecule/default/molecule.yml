@@ -38,6 +38,7 @@ provisioner:
   env:
     ANSIBLE_CONFIG: ../../ansible.cfg
     ANSIBLE_LIBRARY: "${MOLECULE_VAGRANT_MODULES}"
+    ANSIBLE_VAULT_PASSWORD_FILE: ../../.devops_vault_pass.txt
   inventory:
     links:
       hosts: ../../hosts/hosts_dev
