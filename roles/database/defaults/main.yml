@@ -1,0 +1,8 @@
+---
+
+# Base et utilisateur applicatif créés en plus de l'install MySQL de base
+database_app_name: "fastapi_db"
+database_app_user: "fastapi_user"
+# ⚠️ À surcharger via Ansible Vault en vrai déploiement
+database_app_password: "changeme"
+database_app_host: "localhost"
