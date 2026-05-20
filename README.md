@@ -34,9 +34,10 @@ cd app && uvicorn main:app --reload
 # → http://127.0.0.1:8000/docs
 ```
 
-## Auteur
+## Auteurs
 
-- Hugo Leyx-Valade *(travail individuel)*
+- Hugo Leyx-Valade
+- Augustin Sorel
 
 ## Bonus implémentés
 
@@ -53,7 +54,7 @@ cd app && uvicorn main:app --reload
 
 ## Documentation technique
 
-## Prérequis
+### Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre machine :
 
@@ -65,7 +66,7 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre
 - [VirtualBox](https://www.virtualbox.org/)
 - [Vagrant](https://www.vagrantup.com/)
 
-## Mise en place de l'environnement local
+### Mise en place de l'environnement local
 
 Ce projet utilise un environnement virtuel Python pour isoler les dépendances. Pour l'initialiser, exécutez depuis la racine du projet :
 
@@ -80,7 +81,7 @@ Des fonctions utilitaires sont ensuite disponibles dans le terminal :
 - `rebuild_env` — recrée l'environnement virtuel from scratch
 - `deactivate` — quitte l'environnement virtuel
 
-## Développement et tests avec Molecule
+### Développement et tests avec Molecule
 
 Ce projet intègre [Molecule](https://molecule.readthedocs.io/en/stable/) pour tester les rôles Ansible dans des machines virtuelles éphémères.
 
@@ -93,7 +94,7 @@ Ce projet intègre [Molecule](https://molecule.readthedocs.io/en/stable/) pour t
 
 > Avant tout commit, vérifiez que tous les tests passent avec `molecule test`.
 
-## Structure du projet
+### Structure du projet
 
 ```
 .
@@ -104,13 +105,18 @@ Ce projet intègre [Molecule](https://molecule.readthedocs.io/en/stable/) pour t
 │   ├── api.yml
 │   └── database.yml
 ├── roles/              # Rôles Ansible locaux
+│   ├── app/            # Déploiement de l'application FastAPI (service systemd, env)
+│   ├── runtime/        # Environnement d'exécution Python (venv, dépendances)
+│   ├── webserver/      # Configuration Nginx (reverse proxy)
+│   ├── database/       # Configuration MySQL
+│   ├── geerlingguy.nginx/  # Rôle Galaxy : installation Nginx
 │   └── requirements.yml
 ├── molecule/           # Configuration des tests Molecule
 ├── playbook_install.yml # Playbook principal de déploiement
 └── venv.sh             # Script d'initialisation de l'environnement
 ```
 
-## Déploiement
+### Déploiement
 
 ### 1. Activer l'environnement virtuel
 
@@ -135,12 +141,12 @@ Pour ce projet d'exemple, le mot de passe est : `password`
 
 ### 4. Lancer le playbook
 
-Voici la commande pour lancer le playbook si une vrai machine est configuré (ce qui n'est pas le cas pour ce TP).
+Voici la commande pour lancer le playbook si une vraie machine est configurée (ce qui n'est pas le cas pour ce TP).
 ```bash
 ansible-playbook -i hosts/hosts_dev -u devops playbook_install.yml
 ```
 
-## Gestion des vaults
+### Gestion des vaults
 
 ```bash
 # Créer un nouveau vault

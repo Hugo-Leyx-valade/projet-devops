@@ -1,0 +1,16 @@
+---
+
+galaxy_info:
+  role_name: app
+  author: efrei-devops
+  description: Deploy the FastAPI application as a systemd service
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
+
+dependencies:
+  - role: runtime

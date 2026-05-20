@@ -1,0 +1,28 @@
+---
+
+# --- Identité système de l'application ------------------------------------
+app_user: fastapi
+app_group: fastapi
+
+# --- Arborescence cible sur le serveur ------------------------------------
+app_home: /opt/fastapi
+app_dir: "{{ app_home }}/app"
+app_venv_dir: "{{ app_home }}/venv"
+app_config_dir: /etc/fastapi
+
+# --- Source locale (fichiers à copier depuis le repo) ---------------------
+app_local_src: "{{ playbook_dir }}/app"
+
+# --- Paramètres réseau d'uvicorn ------------------------------------------
+app_bind_host: "127.0.0.1"
+app_bind_port: 8000
+app_workers: 2
+
+# --- Variables d'environnement injectées dans /etc/fastapi/fastapi.env ----
+# Surcharger dans group_vars/api.yml pour ajouter DB_URL, SECRETS, etc.
+app_env:
+  APP_NAME: "efrei-devops-api"
+  APP_ENV: "production"
+
+# --- Nom du service systemd -----------------------------------------------
+app_service_name: fastapi

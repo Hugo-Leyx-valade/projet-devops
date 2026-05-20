@@ -1,0 +1,8 @@
+---
+
+# Paquets système nécessaires au runtime Python/FastAPI
+runtime_apt_packages:
+  - python3
+  - python3-venv
+  - python3-pip
+  - build-essential

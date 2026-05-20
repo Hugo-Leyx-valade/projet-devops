@@ -1,0 +1,91 @@
+---
+
+- name: Ensure application group exists
+  ansible.builtin.group:
+    name: "{{ app_group }}"
+    system: true
+    state: present
+
+- name: Ensure application user exists
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    group: "{{ app_group }}"
+    home: "{{ app_home }}"
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: false
+    state: present
+
+- name: Create application directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0755"
+  loop:
+    - "{{ app_home }}"
+    - "{{ app_dir }}"
+
+- name: Create /etc/fastapi config directory
+  ansible.builtin.file:
+    path: "{{ app_config_dir }}"
+    state: directory
+    owner: root
+    group: "{{ app_group }}"
+    mode: "0750"
+
+- name: Deploy application source (only needed files)
+  ansible.builtin.copy:
+    src: "{{ app_local_src }}/{{ item }}"
+    dest: "{{ app_dir }}/{{ item }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0644"
+  loop:
+    - main.py
+    - requirements.txt
+  notify: Restart app
+
+- name: Create Python virtualenv and install requirements
+  ansible.builtin.pip:
+    requirements: "{{ app_dir }}/requirements.txt"
+    virtualenv: "{{ app_venv_dir }}"
+    virtualenv_command: python3 -m venv
+    state: present
+  notify: Restart app
+
+- name: Ensure venv ownership
+  ansible.builtin.file:
+    path: "{{ app_venv_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    recurse: true
+
+- name: Deploy environment file
+  ansible.builtin.template:
+    src: fastapi.env.j2
+    dest: "{{ app_config_dir }}/fastapi.env"
+    owner: root
+    group: "{{ app_group }}"
+    mode: "0640"
+  notify: Restart app
+
+- name: Deploy systemd service unit
+  ansible.builtin.template:
+    src: fastapi.service.j2
+    dest: "/etc/systemd/system/{{ app_service_name }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart app
+
+- name: Enable and start application service
+  ansible.builtin.systemd:
+    name: "{{ app_service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: true

@@ -1,5 +1,9 @@
-roles/*
+roles/database
+roles/geerlingguy.nginx
 !roles/requirements.yml
+!roles/app/*
+!roles/runtime/*
+!roles/webserver/*
 .vagrant
 *.retry
 .virtualenv

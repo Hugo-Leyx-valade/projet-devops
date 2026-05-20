@@ -1,0 +1,23 @@
+---
+
+- name: Deploy FastAPI vhost (Jinja2 template)
+  ansible.builtin.template:
+    src: fastapi.conf.j2
+    dest: "{{ webserver_sites_available }}/{{ webserver_site_name }}.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload nginx
+
+- name: Enable FastAPI vhost
+  ansible.builtin.file:
+    src: "{{ webserver_sites_available }}/{{ webserver_site_name }}.conf"
+    dest: "{{ webserver_sites_enabled }}/{{ webserver_site_name }}.conf"
+    state: link
+  notify: Reload nginx
+
+- name: Remove default nginx site if present
+  ansible.builtin.file:
+    path: "{{ webserver_sites_enabled }}/default"
+    state: absent
+  notify: Reload nginx

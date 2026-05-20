@@ -1,0 +1,14 @@
+---
+
+# Backend applicatif (où tourne uvicorn/FastAPI)
+webserver_upstream_host: "127.0.0.1"
+webserver_upstream_port: 8000
+
+# Paramètres du vhost
+webserver_listen_port: 80
+webserver_server_name: "_"
+
+# Nom du fichier de conf déployé
+webserver_site_name: fastapi
+webserver_sites_available: /etc/nginx/sites-available
+webserver_sites_enabled: /etc/nginx/sites-enabled

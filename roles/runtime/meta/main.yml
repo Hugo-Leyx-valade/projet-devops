@@ -1,0 +1,15 @@
+---
+
+galaxy_info:
+  role_name: runtime
+  author: efrei-devops
+  description: Install Python runtime for application servers
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
+
+dependencies: []
